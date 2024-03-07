@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members List</title>
+    <style>
+        /* Add your CSS styles here */
+        .member-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .member-container img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Members List</h1>
+
+    <div id="membersList">
+        <!-- Member list will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // Fetch members and populate the list
+        async function fetchMembers() {
+            try {
+                const response = await fetch('/api/members');
+                const members = await response.json();
+
+                const membersList = document.getElementById('membersList');
+                membersList.innerHTML = '';
+
+                members.forEach(member => {
+                    const memberContainer = document.createElement('div');
+                    memberContainer.classList.add('member-container');
+
+                    const image = document.createElement('img');
+                    image.src = member.imageUrl; // Assuming imageUrl is the member image URL
+                    image.alt = 'Member Image';
+
+                    const name = document.createElement('span');
+                    name.textContent = `${member.firstName} ${member.lastName}`;
+
+                    const viewButton = document.createElement('button');
+                    viewButton.textContent = 'View';
+                    viewButton.addEventListener('click', () => {
+                        // Implement logic to view member details based on member object
+                        alert(`Viewing details of ${member.firstName} ${member.lastName}`);
+                    });
+
+                    memberContainer.appendChild(image);
+                    memberContainer.appendChild(name);
+                    memberContainer.appendChild(viewButton);
+
+                    membersList.appendChild(memberContainer);
+                });
+            } catch (error) {
+                console.error('Error fetching members:', error);
+            }
+        }
+
+        // Fetch members when the page loads
+        fetchMembers();
+    </script>
+</body>
+</html>
