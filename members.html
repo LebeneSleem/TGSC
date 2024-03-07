@@ -9,17 +9,21 @@
         .member-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             padding: 10px;
         }
         .member-item img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .action-buttons {
+            display: flex;
         }
         .action-buttons button {
-            margin-right: 10px;
+            margin-left: 10px;
         }
         #memberDetailsPopup {
             position: fixed;
@@ -31,11 +35,17 @@
             padding: 20px;
             z-index: 1000;
             display: none;
+            max-height: 80%;
+            overflow-y: auto;
+            padding-right: 20px; /* Add padding to prevent content from overlapping scrollbar */
         }
     </style>
 </head>
 <body>
-    <h1>Members List</h1>
+    <h1>TGSC Members</h1>
+
+    <!-- Display total number of members -->
+    <p>Total Members: <span id="totalMembers">0</span></p>
 
     <ul id="membersList">
         <!-- Member list will be dynamically inserted here -->
@@ -61,10 +71,12 @@
                     li.classList.add('member-item');
                     li.innerHTML = `
                         <img src="/uploads/${member.imageUrl}" alt="Member Image">
-                        <p>${member.firstName} ${member.lastName}</p>
+                        <div class="member-details">
+                            <p>${member.firstName} ${member.lastName}</p>
+                        </div>
                         <div class="action-buttons">
-                            <button class="view-button" onclick="showMemberDetails('${member.firstName}', '${member.lastName}', '${member.dob}', '${member.imageUrl}', '${member.gender}', '${member.tel}', '${member.email}', '${member.maritalStatus}', '${member.location}', '${member.occupation}')">View</button>
-                            <button class="edit-button" onclick="editMember('${member.id}', '${member.firstName}', '${member.lastName}', '${member.dob}', '${member.imageUrl}')">Edit</button>
+                            <button class="view-button" onclick="showMemberDetails('${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}')">View</button>
+                            <button class="edit-button" onclick="editMember('${member.id}', '${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}')">Edit</button>
                             <button class="delete-button" onclick="deleteMember('${member.id}')">Delete</button>
                         </div>
                     `;
