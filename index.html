@@ -50,6 +50,11 @@
 
             const formData = new FormData(this);
 
+            // Format the date of birth before sending to the server
+            const dobInput = formData.get('dob');
+            const dob = new Date(dobInput).toLocaleDateString('en-US');
+            formData.set('dob', dob);
+
             try {
                 const response = await fetch('/api/members', {
                     method: 'POST',

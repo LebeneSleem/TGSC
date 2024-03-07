@@ -6,25 +6,39 @@
     <title>Members List</title>
     <style>
         /* Add your CSS styles here */
-        .member-container {
+        .member-item {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
             padding: 10px;
         }
-        .member-container img {
-            width: 50px;
-            height: 50px;
+        .member-item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .member-details {
+            flex-grow: 1;
+        }
+        .action-buttons button {
             margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Members List</h1>
+    
+    <!-- Total number of members -->
+    <p>Total Members: <span id="totalMembers">0</span></p>
 
-    <div id="membersList">
+    <ul id="membersList">
         <!-- Member list will be dynamically inserted here -->
+    </ul>
+
+    <!-- Member details popup -->
+    <div id="memberDetailsPopup" style="display: none;">
+        <!-- Popup content will be dynamically inserted here -->
     </div>
 
     <script>
@@ -38,31 +52,121 @@
                 membersList.innerHTML = '';
 
                 members.forEach(member => {
-                    const memberContainer = document.createElement('div');
-                    memberContainer.classList.add('member-container');
-
-                    const image = document.createElement('img');
-                    image.src = member.imageUrl; // Assuming imageUrl is the member image URL
-                    image.alt = 'Member Image';
-
-                    const name = document.createElement('span');
-                    name.textContent = `${member.firstName} ${member.lastName}`;
-
-                    const viewButton = document.createElement('button');
-                    viewButton.textContent = 'View';
-                    viewButton.addEventListener('click', () => {
-                        // Implement logic to view member details based on member object
-                        alert(`Viewing details of ${member.firstName} ${member.lastName}`);
-                    });
-
-                    memberContainer.appendChild(image);
-                    memberContainer.appendChild(name);
-                    memberContainer.appendChild(viewButton);
-
-                    membersList.appendChild(memberContainer);
+                    const li = document.createElement('li');
+                    li.classList.add('member-item');
+                    li.innerHTML = `
+                        <img src="/uploads/${member.imageUrl}" alt="Member Image">
+                        <div class="member-details">
+                            <p>${member.firstName} ${member.lastName}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="view-button" onclick="showMemberDetails('${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}')">View</button>
+                            <button class="edit-button" onclick="editMember('${member.id}', '${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}')">Edit</button>
+                            <button class="delete-button" onclick="deleteMember('${member.id}')">Delete</button>
+                        </div>
+                    `;
+                    // Append the list item to the member list
+                    membersList.appendChild(li);
                 });
+
+                // Update total number of members
+                document.getElementById('totalMembers').textContent = members.length;
             } catch (error) {
                 console.error('Error fetching members:', error);
+            }
+        }
+
+        // Show member details in popup
+        function showMemberDetails(firstName, lastName, dob, imageUrl) {
+            const memberDetailsPopup = document.getElementById('memberDetailsPopup');
+            memberDetailsPopup.innerHTML = `
+                <img src="/uploads/${imageUrl}" alt="Member Image">
+                <p>First Name: ${firstName}</p>
+                <p>Last Name: ${lastName}</p>
+                <p>Date of Birth: ${new Date(dob).toLocaleDateString()}</p>
+                <!-- Add other member details here -->
+            `;
+            // Show the popup
+            memberDetailsPopup.style.display = 'block';
+        }
+
+        // Edit member details
+        function editMember(id, firstName, lastName, dob, imageUrl) {
+            const form = document.createElement('form');
+            form.innerHTML = `
+                <h2>Edit Member Details</h2>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" value="${firstName}" required><br><br>
+                
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" value="${lastName}" required><br><br>
+                
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" value="${dob}" required><br><br>
+                
+                <button type="submit">Save</button>
+            `;
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const newFirstName = form.elements.firstName.value;
+                const newLastName = form.elements.lastName.value;
+                const newDob = form.elements.dob.value;
+
+                if (newFirstName && newLastName && newDob) {
+                    // Perform the update request to the backend
+                    fetch(`/api/members/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            firstName: newFirstName,
+                            lastName: newLastName,
+                            dob: newDob
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Member details updated successfully');
+                            // Refresh the member list after updating
+                            fetchMembers();
+                        } else {
+                            alert('Failed to update member details');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating member details:', error);
+                        alert('An error occurred while updating member details');
+                    });
+                }
+            });
+
+            // Show the form in a popup
+            alert('Edit Member Details:');
+            alert(form.outerHTML);
+        }
+
+        // Delete member
+        function deleteMember(id) {
+            // Implement delete functionality here
+            if (confirm('Are you sure you want to delete this member?')) {
+                fetch(`/api/members/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Member deleted successfully');
+                        // Refresh the member list after deletion
+                        fetchMembers();
+                    } else {
+                        alert('Failed to delete member');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting member:', error);
+                    alert('An error occurred while deleting member');
+                });
             }
         }
 

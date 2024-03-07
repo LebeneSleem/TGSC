@@ -29,22 +29,38 @@ let members = [];
 // Route to add a new member
 app.post('/api/members', upload.single('image'), (req, res) => {
     // Handle member creation
-    console.log(req.body);
-    console.log(req.file);
-    
+    console.log('Request Body:', req.body); // Log the entire request body
+    console.log('Date of Birth:', req.body.dob); // Log the value of the date field
+
     const { firstName, lastName, dob } = req.body;
 
     // Format date of birth
     const dateOfBirth = new Date(dob).toLocaleDateString('en-US');
 
     // Add the new member to the list
-    members.push({ firstName, lastName, dateOfBirth, imageUrl: req.file.filename });
+    members.push({ id: Date.now().toString(), firstName, lastName, dateOfBirth, imageUrl: req.file.filename });
     res.status(200).json({ message: 'Member added successfully' });
 });
 
 // Route to get all members
 app.get('/api/members', (req, res) => {
     res.json(members);
+});
+
+// Route to delete a member
+app.delete('/api/members/:id', (req, res) => {
+    const memberId = req.params.id;
+
+    // Find the index of the member with the given ID
+    const index = members.findIndex(member => member.id === memberId);
+    if (index !== -1) {
+        // Remove the member from the array
+        members.splice(index, 1);
+        res.status(200).json({ message: 'Member deleted successfully' });
+    } else {
+        // If member not found, return 404 Not Found status
+        res.status(404).json({ error: 'Member not found' });
+    }
 });
 
 // Start server
