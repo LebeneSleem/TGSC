@@ -1,0 +1,13 @@
+{
+  "run": " npx mightymeld",
+  "run_prettier": true,
+  "include": [
+    ".",
+    ".git",
+    "images",
+    "tgsc",
+    "uploads"
+  ],
+  "web_server_url": "http://localhost:3000",
+  "editor": "url:vscode://file/%FILENAME:%LINE:%COLUMN"
+}

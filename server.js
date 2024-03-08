@@ -32,13 +32,26 @@ app.post('/api/members', upload.single('image'), (req, res) => {
     console.log('Request Body:', req.body); // Log the entire request body
     console.log('Date of Birth:', req.body.dob); // Log the value of the date field
 
-    const { firstName, lastName, dob } = req.body;
+    const { firstName, lastName, dob, gender, tel, email, maritalStatus, location, occupation } = req.body;
 
     // Format date of birth
     const dateOfBirth = new Date(dob).toLocaleDateString('en-US');
 
     // Add the new member to the list
-    members.push({ id: Date.now().toString(), firstName, lastName, dateOfBirth, imageUrl: req.file.filename });
+    members.push({ 
+        id: Date.now().toString(), 
+        firstName, 
+        lastName, 
+        dateOfBirth, 
+        gender,
+        tel,
+        email,
+        maritalStatus,
+        location,
+        occupation,
+        imageUrl: req.file.filename 
+    });
+
     res.status(200).json({ message: 'Member added successfully' });
 });
 
@@ -59,6 +72,24 @@ app.delete('/api/members/:id', (req, res) => {
         res.status(200).json({ message: 'Member deleted successfully' });
     } else {
         // If member not found, return 404 Not Found status
+        res.status(404).json({ error: 'Member not found' });
+    }
+});
+
+// Route to update member details
+app.put('/api/members/:id', upload.single('image'), (req, res) => {
+    const memberId = req.params.id;
+
+    const index = members.findIndex(member => member.id === memberId);
+    if (index !== -1) {
+        // Update member details
+        members[index] = { 
+            ...members[index],
+            ...req.body,
+            imageUrl: req.file ? req.file.filename : members[index].imageUrl // Update image if provided
+        };
+        res.status(200).json({ message: 'Member details updated successfully' });
+    } else {
         res.status(404).json({ error: 'Member not found' });
     }
 });

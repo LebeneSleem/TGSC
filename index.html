@@ -4,94 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Church Membership App</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            width: 100px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .banner {
+            background-color: #007bff;
+            padding: 20px;
+            text-align: center;
+            animation: slideIn 1.5s ease;
+        }
+        .banner h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .dashboard {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .chart {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Church Membership App</h1>
+    <header>
+        <div>
+            <img src="images/tgsc.jpeg" alt="Logo" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="#">Attendance</a></li>
+                <li><a href="#">Income</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- Add New Member button -->
-    <button id="addMemberButton">Add New Member</button>
+    <main>
+        <div class="banner">
+            <h1 id="churchName">The Good Steps Church</h1>
+        </div>
 
-    <!-- Membership list link -->
-    <a href="members.html" id="membershipListLink">View Members</a>
+        <section class="dashboard">
+            <h2>Dashboard</h2>
+            <div class="dashboard-components">
+                <div class="chart">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+                <div class="chart">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <!-- Form for adding new members -->
-    <form id="addMemberForm" style="display: none;">
-        <h2>Add New Member</h2>
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required><br><br>
-        
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required><br><br>
-        
-        <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" required><br><br>
-
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select><br><br>
-        
-        <label for="telephone">Telephone Number:</label>
-        <input type="tel" id="telephone" name="telephone" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="maritalStatus">Marital Status:</label>
-        <select id="maritalStatus" name="maritalStatus" required>
-            <option value="single">Single</option>
-            <option value="married">Married</option>
-            <option value="divorced">Divorced</option>
-            <option value="widowed">Widowed</option>
-        </select><br><br>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required><br><br>
-
-        <label for="occupation">Occupation:</label>
-        <input type="text" id="occupation" name="occupation" required><br><br>
-
-        <label for="image">Profile Picture:</label>
-        <input type="file" id="image" name="image" accept="image/*" required><br><br>
-        
-        <button type="submit">Add Member</button>
-    </form>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.getElementById('addMemberButton').addEventListener('click', function() {
-            document.getElementById('addMemberForm').style.display = 'block';
-        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Attendance data (replace with actual data)
+            var attendanceData = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Attendance',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    data: [100, 120, 140, 160, 180, 200] // Example data, replace with actual data
+                }]
+            };
 
-        // Function to add new member
-        document.getElementById('addMemberForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent form submission
+            // Income data (replace with actual data)
+            var incomeData = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Income',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    data: [2000, 2500, 3000, 3500, 4000, 4500] // Example data, replace with actual data
+                }]
+            };
 
-            const formData = new FormData(this);
+            // Render attendance chart
+            var attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+            var attendanceChart = new Chart(attendanceCtx, {
+                type: 'line',
+                data: attendanceData
+            });
 
-            // Format the date of birth before sending to the server
-            const dobInput = formData.get('dob');
-            const dob = new Date(dobInput).toLocaleDateString('en-US');
-            formData.set('dob', dob);
-
-            try {
-                const response = await fetch('/api/members', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    alert('Member added successfully!');
-                    // Clear the form after successful addition
-                    this.reset();
-                } else {
-                    alert('Failed to add member');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while processing your request');
-            }
+            // Render income chart
+            var incomeCtx = document.getElementById('incomeChart').getContext('2d');
+            var incomeChart = new Chart(incomeCtx, {
+                type: 'bar',
+                data: incomeData
+            });
         });
     </script>
 </body>
