@@ -4,97 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TGSC App</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #ffffff;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            width: 100px;
-        }
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        nav ul li {
-            margin-bottom: 10px;
-        }
-        nav ul li a {
-            color: #000000;
-            text-decoration: none;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-        .dropdown-btn {
-            display: none;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #333;
-            min-width: 100px;
-            z-index: 1;
-        }
-        .dropdown-content a {
-            color: #000000;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #555;
-        }
-        .banner {
-            background-color: #a12424;
-            padding: 20px;
-            text-align: center;
-            animation: slideIn 1.5s ease;
-        }
-        .banner h1 {
-            margin: 0;
-            font-size: 36px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
-        .dashboard {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .chart {
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">    
 </head>
 <body>
     <header>
         <div>
             <img src="images/tgsc.jpeg" alt="Logo" class="logo">
         </div>
-        <button class="dropdown-btn" onclick="toggleDropdown()">Menu</button>
         <nav>
-            <ul id="navLinks">
+            <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="members.html">Members</a></li>
                 <li><a href="#">Attendance</a></li>
@@ -123,15 +41,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        function toggleDropdown() {
-            var dropdownContent = document.getElementById("navLinks");
-            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
-                dropdownContent.style.display = "flex";
-            } else {
-                dropdownContent.style.display = "none";
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function () {
             // Attendance data (replace with actual data)
             var attendanceData = {

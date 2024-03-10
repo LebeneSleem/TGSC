@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #ffffff;
     color: #fff;
     padding: 10px 20px;
     display: flex;
@@ -15,7 +15,7 @@ header {
 }
 
 .logo {
-    width: 100px;
+    width: 50px;
 }
 
 nav ul {
@@ -30,7 +30,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #fff;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -39,8 +39,8 @@ nav ul li a:hover {
 }
 
 .banner {
-    background-color: #007bff;
-    padding: 20px;
+    background-color: #7e1919d5;
+    padding: 40px;
     text-align: center;
     animation: slideIn 1.5s ease;
 }
@@ -98,7 +98,7 @@ nav ul li a:hover {
     display: none;
     max-height: 80%;
     overflow-y: auto;
-    padding-right: 20px; /* Add padding to prevent content from overlapping scrollbar */
+    padding-right: 20px; /* padding to prevent content from overlapping scrollbar */
 }
 
 .popup-close {
@@ -155,18 +155,17 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Add more styles as needed */
 .image-upload-container {
     position: relative;
     width: 100px;
     height: 100px;
     border: 2px dashed #ccc;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-bottom: 20px;
-}
+    margin: 20px auto; 
 
 .camera-icon-label {
     position: absolute;
@@ -178,4 +177,13 @@ button:hover {
 .camera-icon {
     width: 50px;
     height: 50px;
+}
+
+.dashboard {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+.chart {
+    margin-bottom: 20px;
 }
