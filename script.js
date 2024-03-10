@@ -34,7 +34,7 @@ async function fetchMembers() {
                 </div>
                 <div class="action-buttons">
                     <button class="view-button" onclick="showMemberDetails('${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}', '${member.gender}', '${member.telephone}', '${member.email}', '${member.maritalStatus}', '${member.location}', '${member.occupation}')">View</button>
-                    <button class="edit-button" onclick="openEditPopup('${member.id}', '${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}', '${member.gender}', '${member.tel}', '${member.email}', '${member.maritalStatus}', '${member.location}', '${member.occupation}')">Edit</button>
+                    <button class="edit-button" onclick="openEditPopup('${member.id}', '${member.firstName}', '${member.lastName}', '${member.dateOfBirth}', '${member.imageUrl}', '${member.gender}', '${member.telephone}', '${member.email}', '${member.maritalStatus}', '${member.location}', '${member.occupation}')">Edit</button>
                     <button class="delete-button" onclick="deleteMember('${member.id}')">Delete</button>
                 </div>
             `;
@@ -102,8 +102,8 @@ function openEditPopup(id, firstName, lastName, dob, imageUrl, gender, tel, emai
         <label for="editMaritalStatus">Marital Status:</label>
         <select id="editMaritalStatus" name="editMaritalStatus" required>
             <option value="married" ${maritalStatus === 'married' ? 'selected' : ''}>Married</option>
-            <option value="divorced" ${maritalStatus === 'Have a beloved' ? 'selected' : ''}>Have a beloved</option>
-            <option value="widowed" ${maritalStatus === 'Dont have a beloved' ? 'selected' : ''}>Dont have a beloved</option>
+            <option value="Have a beloved" ${maritalStatus === 'Have a beloved' ? 'selected' : ''}>Have a beloved</option>
+            <option value="Dont have a beloved" ${maritalStatus === 'Dont have a beloved' ? 'selected' : ''}>Don't have a beloved</option>
         </select><br><br>
 
         <label for="editLocation">Location:</label>
@@ -136,17 +136,17 @@ async function saveMemberChanges(id) {
     const editImage = document.getElementById('editImage').files[0];
 
     const formData = new FormData();
-    formData.append('firstName', editFirstName);
-    formData.append('lastName', editLastName);
-    formData.append('dob', editDob);
-    formData.append('gender', editGender);
-    formData.append('telephone', editTelephone);
-    formData.append('email', editEmail);
-    formData.append('maritalStatus', editMaritalStatus);
-    formData.append('location', editLocation);
-    formData.append('occupation', editOccupation);
+    formData.append('editFirstName', editFirstName);
+    formData.append('editLastName', editLastName);
+    formData.append('editDob', editDob);
+    formData.append('editGender', editGender);
+    formData.append('editTelephone', editTelephone);
+    formData.append('editEmail', editEmail);
+    formData.append('editMaritalStatus', editMaritalStatus);
+    formData.append('editLocation', editLocation);
+    formData.append('editOccupation', editOccupation);
     if (editImage) {
-        formData.append('image', editImage);
+        formData.append('editImage', editImage);
     }
 
     try {
@@ -189,32 +189,35 @@ async function deleteMember(id) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Event listener for file input change
-    document.querySelector('.image-upload-container').addEventListener('click', function() {
-        document.getElementById('image').click();
-    });
+    const imageInput = document.getElementById('image');
+    const imagePreviewContainer = document.querySelector('.image-upload-container');
+    const cameraIcon = document.getElementById('cameraIcon');
 
-    // Event listener for file input change
-    document.getElementById('image').addEventListener('change', function() {
+    imageInput.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const imagePreviewContainer = document.querySelector('.image-upload-container');
                 imagePreviewContainer.style.backgroundImage = `url(${e.target.result})`;
                 imagePreviewContainer.style.backgroundSize = 'cover'; // Ensure image fits container
-                document.getElementById('cameraIcon').style.display = 'none';
+                cameraIcon.style.display = 'none';
             };
             reader.readAsDataURL(file);
         }
     });
 
     // Add event listener to display the "Add New Member" form
-    document.getElementById('addMemberButton').addEventListener('click', function() {
-        document.getElementById('addMemberForm').style.display = 'block';
+    const addMemberButton = document.getElementById('addMemberButton');
+    const addMemberForm = document.getElementById('addMemberForm');
+
+    addMemberButton.addEventListener('click', function() {
+        addMemberForm.style.display = 'block';
     });
 
     // Add member form submission
-    document.getElementById('newMemberForm').addEventListener('submit', async function(event) {
+    const newMemberForm = document.getElementById('newMemberForm');
+
+    newMemberForm.addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent form submission
 
         const formData = new FormData(this);
@@ -227,11 +230,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 alert('Member added successfully!');
-                document.getElementById('newMemberForm').reset();
-                const imagePreviewContainer = document.querySelector('.image-upload-container');
+                newMemberForm.reset();
                 imagePreviewContainer.style.backgroundImage = 'none';
-                document.getElementById('cameraIcon').style.display = 'flex';
-                document.getElementById('addMemberForm').style.display = 'none';
+                cameraIcon.style.display = 'flex';
+                addMemberForm.style.display = 'none';
                 fetchMembers(); // Refresh member list
             } else {
                 alert('Failed to add member');
@@ -241,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('An error occurred while processing your request');
         }
     });
-    
+
     // Fetch members when the page loads
     fetchMembers();
 });
