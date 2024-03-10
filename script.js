@@ -101,10 +101,9 @@ function openEditPopup(id, firstName, lastName, dob, imageUrl, gender, tel, emai
 
         <label for="editMaritalStatus">Marital Status:</label>
         <select id="editMaritalStatus" name="editMaritalStatus" required>
-            <option value="single" ${maritalStatus === 'single' ? 'selected' : ''}>Single</option>
             <option value="married" ${maritalStatus === 'married' ? 'selected' : ''}>Married</option>
-            <option value="divorced" ${maritalStatus === 'divorced' ? 'selected' : ''}>Divorced</option>
-            <option value="widowed" ${maritalStatus === 'widowed' ? 'selected' : ''}>Widowed</option>
+            <option value="divorced" ${maritalStatus === 'Have a beloved' ? 'selected' : ''}>Have a beloved</option>
+            <option value="widowed" ${maritalStatus === 'Dont have a beloved' ? 'selected' : ''}>Dont have a beloved</option>
         </select><br><br>
 
         <label for="editLocation">Location:</label>
@@ -189,60 +188,60 @@ async function deleteMember(id) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-// Event listener for file input change
-document.getElementById('image').addEventListener('change', function() {
-const file = this.files[0];
-if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const imagePreviewContainer = document.querySelector('.image-upload-container');
-        imagePreviewContainer.style.backgroundImage = `url(${e.target.result})`;
-        document.getElementById('cameraIcon').style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-}
-});
-
-// Event listener for camera icon click
-document.querySelector('.camera-icon-label').addEventListener('click', function() {
-document.getElementById('image').click();
-});
-
-// Add event listener to display the "Add New Member" form
-document.getElementById('addMemberButton').addEventListener('click', function() {
-document.getElementById('addMemberForm').style.display = 'block';
-});
-
-// Add member form submission
-document.getElementById('newMemberForm').addEventListener('submit', async function(event) {
-event.preventDefault(); // Prevent form submission
-
-const formData = new FormData(this);
-
-try {
-    const response = await fetch('/api/members', {
-        method: 'POST',
-        body: formData
+    // Event listener for file input change
+    document.querySelector('.image-upload-container').addEventListener('click', function() {
+        document.getElementById('image').click();
     });
 
-    if (response.ok) {
-        alert('Member added successfully!');
-        document.getElementById('newMemberForm').reset();
-        const imagePreviewContainer = document.querySelector('.image-upload-container');
-        imagePreviewContainer.style.backgroundImage = 'none';
-        document.getElementById('cameraIcon').style.display = 'flex';
-        document.getElementById('addMemberForm').style.display = 'none';
-        fetchMembers(); // Refresh member list
-    } else {
-        alert('Failed to add member');
-    }
-} catch (error) {
-    console.error('Error adding member:', error);
-    alert('An error occurred while processing your request');
-}
-});
-});
+    // Event listener for file input change
+    document.getElementById('image').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreviewContainer = document.querySelector('.image-upload-container');
+                imagePreviewContainer.style.backgroundImage = `url(${e.target.result})`;
+                imagePreviewContainer.style.backgroundSize = 'cover'; // Ensure image fits container
+                document.getElementById('cameraIcon').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
+    // Add event listener to display the "Add New Member" form
+    document.getElementById('addMemberButton').addEventListener('click', function() {
+        document.getElementById('addMemberForm').style.display = 'block';
+    });
 
-// Fetch members when the page loads
-fetchMembers();
+    // Add member form submission
+    document.getElementById('newMemberForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch('/api/members', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('Member added successfully!');
+                document.getElementById('newMemberForm').reset();
+                const imagePreviewContainer = document.querySelector('.image-upload-container');
+                imagePreviewContainer.style.backgroundImage = 'none';
+                document.getElementById('cameraIcon').style.display = 'flex';
+                document.getElementById('addMemberForm').style.display = 'none';
+                fetchMembers(); // Refresh member list
+            } else {
+                alert('Failed to add member');
+            }
+        } catch (error) {
+            console.error('Error adding member:', error);
+            alert('An error occurred while processing your request');
+        }
+    });
+    
+    // Fetch members when the page loads
+    fetchMembers();
+});

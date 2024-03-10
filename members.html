@@ -50,9 +50,7 @@
         <div class="popup-form" id="addMemberForm">
             <h2>Add New Member</h2>
             <form id="newMemberForm">
-                <!-- Image preview -->
-                <img id="imagePreview" src="#" alt="Profile Picture" style="display: none; width: 100px; height: 100px; margin-bottom: 10px;">
-
+                
                 <!-- File input for image -->
                 <div class="image-upload-container">
                     <input type="file" id="image" name="image" accept="image/*" style="display: none;" required>
@@ -82,12 +80,11 @@
                     <select id="gender" name="gender" required>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
-                        <option value="other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="telephone">Telephone Number:</label>
+                    <label for="tel">Telephone Number:</label>
                     <input type="tel" id="tel" name="telephone" required>
                 </div>
 
@@ -99,10 +96,10 @@
                 <div class="form-group">
                     <label for="maritalStatus">Marital Status:</label>
                     <select id="maritalStatus" name="maritalStatus" required>
-                        <option value="single">Single</option>
+                        <option value="choose">choose</option>
                         <option value="married">Married</option>
-                        <option value="divorced">Divorced</option>
-                        <option value="widowed">Widowed</option>
+                        <option value="Have a beloved">Have a beloved</option>
+                        <option value="Dont have a beloved">Dont have a beloved</option>
                     </select>
                 </div>
 
