@@ -15,7 +15,7 @@ header {
 }
 
 .logo {
-    width: 80px; /* Adjust logo size for mobile */
+    width: 100px;
 }
 
 nav ul {
@@ -26,7 +26,7 @@ nav ul {
 }
 
 nav ul li {
-    margin-right: 10px; /* Adjust margin for mobile */
+    margin-right: 20px;
 }
 
 nav ul li a {
@@ -40,14 +40,14 @@ nav ul li a:hover {
 
 .banner {
     background-color: #007bff;
-    padding: 15px; /* Adjust padding for mobile */
+    padding: 20px;
     text-align: center;
     animation: slideIn 1.5s ease;
 }
 
 .banner h1 {
     margin: 0;
-    font-size: 24px; /* Adjust font size for mobile */
+    font-size: 36px;
     color: #fff;
     text-transform: uppercase;
 }
@@ -65,27 +65,40 @@ nav ul li a:hover {
 
 .member-item {
     display: flex;
-    flex-direction: column; /* Adjust layout for mobile */
-    align-items: flex-start; /* Adjust alignment for mobile */
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     padding: 10px;
 }
 
 .member-item img {
-    width: 100%; /* Adjust image width for mobile */
-    height: auto; /* Ensure image height adjusts proportionally */
-    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
 }
 
 .action-buttons {
     display: flex;
-    justify-content: flex-end; /* Adjust alignment for mobile */
-    width: 100%; /* Ensure buttons occupy full width */
 }
 
 .action-buttons button {
     margin-left: 10px;
+}
+
+#memberDetailsPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 20px;
+    z-index: 1000;
+    display: none;
+    max-height: 80%;
+    overflow-y: auto;
+    padding-right: 20px; /* Add padding to prevent content from overlapping scrollbar */
 }
 
 .popup-close {
@@ -165,33 +178,4 @@ button:hover {
 .camera-icon {
     width: 50px;
     height: 50px;
-}
-
-/* Mobile-specific styles */
-@media only screen and (max-width: 600px) {
-    nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #333;
-        padding: 10px 0;
-    }
-
-    nav ul {
-        display: flex;
-        justify-content: space-around;
-        padding: 0;
-    }
-
-    nav ul li {
-        text-align: center;
-        flex-grow: 1;
-    }
-
-    nav ul li a {
-        display: block;
-        color: #fff;
-        text-decoration: none;
-    }
 }
